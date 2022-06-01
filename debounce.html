@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style type="text/css">
+	* {
+		font-family: 'Inter', sans-serif;
+	}
+</style>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Debounce and Throttle</title>
+	<script type="text/javascript" src="js/tailwind.js"></script>
+</head>
+<body>
+	<div class="grid grid-cols-8 gap-4 mt-20">
+		<div class="p-4 rounded-lg bg-pink-300 dark:bg-pink-800 dark:text-pink-400 col-start-3 col-span-4 grid grid-cols-8 gap-4">
+			<div class="col-start-3 col-span-4 w-full max-w-sm">
+			  <div class="md:flex md:items-center mb-6 mt-6">
+			    <div class="md:w-1/3">
+			      <label class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4" for="input-value">
+			        Input
+			      </label>
+			    </div>
+			    <div class="md:w-2/3">
+			      <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500" type="text" id="input-value">
+			    </div>
+			  </div>
+			</div>
+			<div class="col-start-3 col-span-4 w-full max-w-sm">
+			  <div class="md:flex md:items-center mb-6">
+			    <div class="md:w-1/3">
+			      <label class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4" for="output-value">
+			        Output
+			      </label>
+			    </div>
+			    <div class="md:w-2/3">
+			      <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-red-500" type="text" id="output-value">
+			    </div>
+			  </div>
+			</div>
+
+			<div class="col-start-3 col-span-4 w-full max-w-sm">
+			  <div class="md:flex md:items-center mb-6">
+			    <div class="md:w-1/3">
+			      <label class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4" for="output-value">
+			        <span id="debounce-interval-display"></span> second(s) Interval
+			      </label>
+			    </div>
+			    <div class="md:w-2/3">
+			      <input class="w-full py-2 px-4" type="range" id="debounce-interval-value" min="0" max="10">
+			    </div>
+			  </div>
+			</div>
+			<div class="col-start-3 col-span-4 w-full max-w-sm">
+			  <div class="md:flex md:items-center mb-6">
+			    <div class="md:w-1/3">
+			      <label class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4" for="debounce-value">
+			        Debounce Output
+			      </label>
+			    </div>
+			    <div class="md:w-2/3">
+			      <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type="text" id="debounce-value" disabled>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	let inputField = document.getElementById('input-value');
+	let outputField = document.getElementById('output-value');
+	let debounceOutputField = document.getElementById('debounce-value');
+	let debounceIntervalField = document.getElementById('debounce-interval-value');
+	
+	let debounceIntervalDisplay = document.getElementById('debounce-interval-display');
+
+	let debounceTimerInterval = debounceIntervalField.value;
+	debounceIntervalDisplay.innerHTML = debounceIntervalField.value;
+
+	let debounceTimer;
+
+	inputField.addEventListener("input", () => {
+		debounce(finishDebounce, debounceTimerInterval);
+	})
+
+	debounceIntervalField.addEventListener("input", () => {
+		debounceIntervalDisplay.innerHTML = debounceIntervalField.value;
+		debounceTimerInterval = debounceIntervalField.value;
+	})
+
+	let debounce = (callback, second) => {
+		time = second * 1000;
+
+		clearTimeout(debounceTimer);
+		setValueToOutput();
+		debounceTimer = setTimeout(callback, time);
+	}
+
+	let setValueToOutput = () => {
+		outputField.value = inputField.value;
+	}
+
+	let finishDebounce = () => {
+		debounceOutputField.value = inputField.value;
+	}
+</script>
